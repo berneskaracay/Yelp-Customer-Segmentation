@@ -1,0 +1,84 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 1.0.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Set up working environment
+
+```{python}
+
+import pandas as pd
+import json
+import requests
+from bs4 import BeautifulSoup as BS
+import re
+import warnings
+import bokeh
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import codecs
+from json import JSONDecoder
+from functools import partial
+pd.options.display.max_rows = 999
+pd.options.display.max_columns = 999
+warnings.filterwarnings("ignore")
+```
+
+# User and Business
+
+```{python}
+user1=pd.read_pickle('data\\user.pkl')
+user1.shape
+```
+
+```{python}
+user1.head()
+```
+
+```{python}
+review1=pd.read_pickle('data\\review1')
+review1.shape
+```
+
+```{python}
+restaurant=pd.read_pickle('data\\business1')
+restaurant.shape
+```
+
+```{python}
+restaurant.head()
+```
+
+```{python}
+ratings=pd.merge(restaurant,review1,on="business_id",how="inner")
+```
+
+```{python}
+ratings=ratings.loc[:,["user_id","business_id","stars"]]
+```
+
+```{python}
+ratings.head()
+```
+
+```{python}
+ratings=ratings.to_pickle("data\\ratings.pkl")
+```
+
+```{python}
+restaurant=restaurant.to_pickle("data\\restaurant.pkl")
+```
+
+```{python}
+
+```

@@ -1,0 +1,238 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 1.0.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Set up working environment
+
+```{python}
+
+import pandas as pd
+import json
+import requests
+from bs4 import BeautifulSoup as BS
+import re
+import warnings
+import bokeha
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import codecs
+from json import JSONDecoder
+from functools import partial
+pd.options.display.max_rows = 999
+pd.options.display.max_columns = 999
+warnings.filterwarnings("ignore")
+```
+
+# Get data and save as pickle data types
+
+```{python}
+# user = pd.read_json('data\\user.json', lines=True)
+# user.head()
+# user.shape
+# user.to_pickle("user.pkl")
+# user.head()
+```
+
+```{python}
+# checkin = pd.read_json('data\\checkin.json', lines=True)
+# checkin.to_pickle("checkin.pkl")
+# checkin.head()
+# review = pd.read_json('data\\review.json', lines=True)
+# review.to_pickle("review.pkl")
+```
+
+```{python}
+# tip = pd.read_json('data\\tip.json', lines=True)
+# tip.to_pickle("tip.pkl")
+# tip.head()
+```
+
+```{python}
+business = pd.read_json('data\\business.json', lines=True)
+business.to_pickle("business.pkl")
+business.head()
+
+
+```
+
+```{python}
+# photo = pd.read_json('data\\photo.json', lines=True)
+# photo.to_pickle("photo.pkl")
+# photo.head()
+```
+
+# subset datasets 
+
+
+## review cleaning
+
+```{python}
+# review=pd.read_pickle("data\\review.pkl")
+# review.shape
+
+# review.head()
+
+# review['stars']=review['stars'].astype(int)
+# review['useful']=review['useful'].astype(float)
+# review.info()
+
+# review=review.loc[review['useful']>=2,:]
+
+
+# review=review.loc[:,["business_id","stars","user_id"]]
+# review.shape
+
+# review.head()
+
+# review.to_pickle("data\\review1")
+```
+
+## Business data slicing
+
+```{python}
+# business=pd.read_pickle('business.pkl')
+
+# business.head()
+
+# business['city'].value_counts()
+
+# business=business.loc[(business['city']=='Las Vegas') & (business['review_count']>100),:]
+
+# business=business.loc[:,["categories","business_id","name"]]
+
+# business.to_pickle("data\\business1")
+```
+
+## user slicing
+
+```{python}
+# user=pd.read_pickle('data\\user.pkl')
+
+# user.head()
+
+# user.head()
+
+# user=user.loc[:,['user_id','review_count','useful']]
+# user.head()
+
+# user.info()
+
+# user=user.loc[(user['review_count']>60) & (user['useful']>10),:]
+# user.shape
+
+# user.to_pickle('data\\user1')
+```
+
+# Load data set and merge them
+
+```{python}
+user1=pd.read_pickle('data\\user.pkl')
+user1.shape
+```
+
+```{python}
+user1.head()
+```
+
+```{python}
+review1=pd.read_pickle('data\\review1')
+review1.shape
+```
+
+```{python}
+review1.head()
+```
+
+```{python}
+business1=pd.read_pickle('data\\business1')
+business1.shape
+```
+
+```{python}
+business1.head()
+```
+
+```{python}
+#business1.groupby("categories").size().sort_values()
+```
+
+```{python}
+merged=pd.merge(business1,review1,on="business_id",how="inner")
+merged=pd.merge(merged,user1,on="user_id",how="inner")
+```
+
+```{python}
+merged.shape
+```
+
+```{python}
+merged.sort_values("review_count").head()
+```
+
+```{python}
+restaurantRatings = merged.pivot_table(index=["user_id"],columns=['name_x'],values='stars')
+restaurantRatings.head()
+```
+
+```{python}
+#list(restaurantRatings)
+```
+
+```{python}
+starWarsRatings = restaurantRatings["Yusho"]
+starWarsRatings.head()
+
+```
+
+```{python}
+similarplace = restaurantRatings.corrwith(starWarsRatings)
+similarplace = similarplace.dropna()
+df = pd.DataFrame(similarplace)
+df.sort_values(0).tail(1000)
+```
+
+```{python}
+list(df)
+```
+
+```{python}
+import numpy as np
+RestaurantStats = merged.groupby('name_x').agg({'stars': [np.size, np.mean]})
+RestaurantStats.head()
+```
+
+```{python}
+popularyelp = RestaurantStats['stars']['size'] >= 100
+RestaurantStats[popularyelp].sort_values([('stars', 'mean')], ascending=False)[:15]
+```
+
+```{python}
+df = RestaurantStats[popularyelp].join(pd.DataFrame(similarplace, columns=['similarity']))
+```
+
+```{python}
+df.sort_values(['similarity'], ascending=False)[:150]
+```
+
+```{python}
+pd.sort_values(df['similarity'])
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
