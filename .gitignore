@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+*.ipynb
 
 # Distribution / packaging
 .Python
@@ -23,6 +24,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+ml-latest-small
+ml-latest-small/
 MANIFEST
 
 # PyInstaller
@@ -99,6 +102,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+data
+data/
 # mypy
 .mypy_cache/
