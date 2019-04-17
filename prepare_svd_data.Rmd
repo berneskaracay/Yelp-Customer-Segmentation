@@ -72,11 +72,11 @@ ratings.head()
 ```
 
 ```{python}
-ratings=ratings.to_pickle("data\\ratings.pkl")
+ratings=ratings.to_csv("data\\ratings.csv")
 ```
 
 ```{python}
-restaurant=restaurant.to_pickle("data\\restaurant.pkl")
+restaurant=restaurant.to_csv("data\\restaurant.csv")
 ```
 
 ```{python}

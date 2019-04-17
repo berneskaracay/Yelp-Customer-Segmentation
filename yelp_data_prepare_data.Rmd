@@ -22,7 +22,7 @@ import requests
 from bs4 import BeautifulSoup as BS
 import re
 import warnings
-import bokeha
+import bokeh
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -59,9 +59,9 @@ warnings.filterwarnings("ignore")
 ```
 
 ```{python}
-business = pd.read_json('data\\business.json', lines=True)
-business.to_pickle("business.pkl")
-business.head()
+# business = pd.read_json('data\\business.json', lines=True)
+# business.to_pickle("business.pkl")
+# business.head()
 
 
 ```
@@ -156,6 +156,9 @@ review1.head()
 
 ```{python}
 business1=pd.read_pickle('data\\business1')
+business1.reset_index(inplace=True)
+
+business1=business1.drop(["index"], axis=1)
 business1.shape
 ```
 
@@ -164,75 +167,129 @@ business1.head()
 ```
 
 ```{python}
-#business1.groupby("categories").size().sort_values()
+business1=business1[["business_id","name","categories"]]
+business1=business1.fillna(0)
 ```
 
 ```{python}
-merged=pd.merge(business1,review1,on="business_id",how="inner")
-merged=pd.merge(merged,user1,on="user_id",how="inner")
+business1=business1.sort_values("business_id")
 ```
 
 ```{python}
-merged.shape
+business1.shape
 ```
 
 ```{python}
-merged.sort_values("review_count").head()
+business1["movieId"] = business1.index + 1
 ```
 
 ```{python}
-restaurantRatings = merged.pivot_table(index=["user_id"],columns=['name_x'],values='stars')
-restaurantRatings.head()
+business1.head()
 ```
 
 ```{python}
-#list(restaurantRatings)
+business1.rename(columns={'name':'title','categories':'genres'})
 ```
 
 ```{python}
-starWarsRatings = restaurantRatings["Yusho"]
-starWarsRatings.head()
-
+business_id_codes=business1[['business_id','movieId']]
+business_id_codes.head()
 ```
 
 ```{python}
-similarplace = restaurantRatings.corrwith(starWarsRatings)
-similarplace = similarplace.dropna()
-df = pd.DataFrame(similarplace)
-df.sort_values(0).tail(1000)
+business1=business1.sort_values("movieId")
 ```
 
 ```{python}
-list(df)
+business1=business1.drop(["business_id"], axis=1)
 ```
 
 ```{python}
-import numpy as np
-RestaurantStats = merged.groupby('name_x').agg({'stars': [np.size, np.mean]})
-RestaurantStats.head()
+business1=business1[["movieId","name","categories"]]
 ```
 
 ```{python}
-popularyelp = RestaurantStats['stars']['size'] >= 100
-RestaurantStats[popularyelp].sort_values([('stars', 'mean')], ascending=False)[:15]
+business1.to_csv("data\\movies.csv")
 ```
 
 ```{python}
-df = RestaurantStats[popularyelp].join(pd.DataFrame(similarplace, columns=['similarity']))
+review1=pd.read_pickle('data\\review1')
+review1.shape
 ```
 
 ```{python}
-df.sort_values(['similarity'], ascending=False)[:150]
+restaurant=pd.read_pickle('data\\business1')
+restaurant.shape
 ```
 
 ```{python}
-pd.sort_values(df['similarity'])
+restaurant.head()
 ```
 
 ```{python}
-
+ratings=pd.merge(restaurant,review1,on="business_id",how="inner")
 ```
 
 ```{python}
+ratings=ratings.loc[:,["user_id","business_id","stars"]]
+```
 
+```{python}
+ratings.head()
+```
+
+```{python}
+ratings.shape
+```
+
+```{python}
+user_id_code=ratings.drop_duplicates(subset=["user_id"], keep="first")
+```
+
+```{python}
+user_id_code.shape
+```
+
+```{python}
+user_id_code.reset_index(inplace=True)
+```
+
+```{python}
+user_id_code["userId"]=user_id_code.index + 1
+```
+
+```{python}
+user_id_code=user_id_code[["user_id","userId"]]
+```
+
+```{python}
+user_id_code.head()
+```
+
+```{python}
+ratings=pd.merge(user_id_code,ratings,on='user_id',how='inner')
+```
+
+```{python}
+ratings=pd.merge(ratings,business_id_codes,on='business_id',how='inner')
+```
+
+```{python}
+ratings=ratings[["userId","movieId","stars"]]
+```
+
+```{python}
+ratings["timestamp"]=1260759144
+```
+
+```{python active="", eval=FALSE}
+ratings.rename(columns={'stars':'rating'})
+```
+
+```{python}
+ratings.head()
+```
+
+```{python}
+ratings.to_csv("data\\ratings.csv")
 ```
