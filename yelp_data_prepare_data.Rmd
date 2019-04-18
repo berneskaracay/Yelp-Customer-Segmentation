@@ -53,7 +53,7 @@ user['review_count']=user['review_count'].astype(float)
 
 #user=user.loc[user['useful']>40,:]
 #user=user.loc[user['fans']>5,:]
-user=user.loc[user['review_count']>20,:]
+user=user.loc[user['review_count']>50,:]
 ```
 
 ```{python}
@@ -61,21 +61,21 @@ user.shape
 ```
 
 ```{python}
-user.to_pickle("user.pkl")
+user.to_pickle("data\\user.pkl")
 user.head()
 ```
 
 ```{python}
 # checkin = pd.read_json('data\\checkin.json', lines=True)
-# checkin.to_pickle("checkin.pkl")
+# checkin.to_pickle("data\\checkin.pkl")
 # checkin.head()
 # review = pd.read_json('data\\review.json', lines=True)
-# review.to_pickle("review.pkl")
+# review.to_pickle("data\\review.pkl")
 ```
 
 ```{python}
 # tip = pd.read_json('data\\tip.json', lines=True)
-# tip.to_pickle("tip.pkl")
+# tip.to_pickle("data\\tip.pkl")
 # tip.head()
 ```
 
@@ -96,18 +96,20 @@ business.head()
 ```
 
 ```{python}
-business=business.loc[business['review_count']>20,:]
+
 business=business.loc[(business['city']=='Las Vegas') ,:]
+#business=business.loc[business['review_count']>20,:]
 ```
 
 ```{python}
-business.to_pickle("business.pkl")
+#business.to_pickle("data\\business.pkl")
+business.to_pickle("data\\business1.pkl")
 business.shape
 ```
 
 ```{python}
 # photo = pd.read_json('data\\photo.json', lines=True)
-# photo.to_pickle("photo.pkl")
+# photo.to_pickle("data\\photo.pkl")
 # photo.head()
 ```
 
@@ -118,37 +120,32 @@ business.shape
 
 ```{python}
 review=pd.read_pickle("data\\review.pkl")
+```
+
+```{python}
 review.shape
 ```
 
 ```{python}
 review['yeni']=1
-```
 
-```{python}
 abc=review.groupby(['user_id']).sum()
-```
 
-```{python}
 abc=abc.loc[abc['yeni']>=40,:]
-```
 
-```{python}
 abc=abc.reset_index()
 users_to_include=abc[["user_id"]]
 users_to_include.head()
+
+review=pd.merge(review,users_to_include,how='inner',on='user_id')
 ```
 
 ```{python}
-review.head()
+review.tail(30)
 ```
 
 ```{python}
 review.shape
-```
-
-```{python}
-review=pd.merge(review,users_to_include,how='inner',on='user_id')
 ```
 
 ```{python}
@@ -171,7 +168,7 @@ review.to_pickle("data\\review1")
 ## Business data slicing
 
 ```{python}
-# business=pd.read_pickle('business.pkl')
+# business=pd.read_pickle('data\\business.pkl')
 
 # business.head()
 
@@ -280,6 +277,10 @@ business1.set_index("movieId",inplace=True)
 ```
 
 ```{python}
+business1.shape
+```
+
+```{python}
 business1.head()
 ```
 
@@ -359,6 +360,34 @@ ratings["timestamp"]=1260759144
 
 ```{python}
 ratings.rename(columns={'stars':'rating'},inplace=True)
+```
+
+```{python}
+ratings['yeni']=1
+```
+
+```{python}
+abc=ratings.groupby(['userId']).sum()
+```
+
+```{python}
+abc=abc.loc[abc['yeni']>=40,:]
+```
+
+```{python}
+abc=abc.reset_index()
+```
+
+```{python}
+users_to_include=abc[["userId"]]
+```
+
+```{python}
+users_to_include.head()
+```
+
+```{python}
+ratings=pd.merge(ratings,users_to_include,how='inner',on='userId')
 ```
 
 ```{python}
