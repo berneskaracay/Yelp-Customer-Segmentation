@@ -37,11 +37,32 @@ warnings.filterwarnings("ignore")
 # Get data and save as pickle data types
 
 ```{python}
-# user = pd.read_json('data\\user.json', lines=True)
-# user.head()
-# user.shape
-# user.to_pickle("user.pkl")
-# user.head()
+user = pd.read_json('data\\user.json', lines=True)
+user.head()
+```
+
+```{python}
+user[['review_count']].mean()
+```
+
+```{python}
+user['useful']=user['useful'].astype(float)
+user['fans']=user['fans'].astype(float)
+user['review_count']=user['review_count'].astype(float)
+
+
+#user=user.loc[user['useful']>40,:]
+#user=user.loc[user['fans']>5,:]
+user=user.loc[user['review_count']>20,:]
+```
+
+```{python}
+user.shape
+```
+
+```{python}
+user.to_pickle("user.pkl")
+user.head()
 ```
 
 ```{python}
@@ -59,11 +80,29 @@ warnings.filterwarnings("ignore")
 ```
 
 ```{python}
-# business = pd.read_json('data\\business.json', lines=True)
-# business.to_pickle("business.pkl")
-# business.head()
+business = pd.read_json('data\\business.json', lines=True)
+```
 
+```{python}
+business.shape
+```
 
+```{python}
+business.head()
+```
+
+```{python}
+#business["review_count"].value_counts()
+```
+
+```{python}
+business=business.loc[business['review_count']>20,:]
+business=business.loc[(business['city']=='Las Vegas') ,:]
+```
+
+```{python}
+business.to_pickle("business.pkl")
+business.shape
 ```
 
 ```{python}
@@ -78,24 +117,55 @@ warnings.filterwarnings("ignore")
 ## review cleaning
 
 ```{python}
-# review=pd.read_pickle("data\\review.pkl")
-# review.shape
+review=pd.read_pickle("data\\review.pkl")
+review.shape
+```
 
-# review.head()
+```{python}
+review['yeni']=1
+```
 
+```{python}
+abc=review.groupby(['user_id']).sum()
+```
+
+```{python}
+abc=abc.loc[abc['yeni']>=40,:]
+```
+
+```{python}
+abc=abc.reset_index()
+users_to_include=abc[["user_id"]]
+users_to_include.head()
+```
+
+```{python}
+review.head()
+```
+
+```{python}
+review.shape
+```
+
+```{python}
+review=pd.merge(review,users_to_include,how='inner',on='user_id')
+```
+
+```{python}
 # review['stars']=review['stars'].astype(int)
 # review['useful']=review['useful'].astype(float)
 # review.info()
 
-# review=review.loc[review['useful']>=2,:]
+# review=review.loc[review['useful']>=20,:]
+```
 
+```{python}
+review=review.loc[:,["business_id","stars","user_id"]]
+review.shape
 
-# review=review.loc[:,["business_id","stars","user_id"]]
-# review.shape
+review.head()
 
-# review.head()
-
-# review.to_pickle("data\\review1")
+review.to_pickle("data\\review1")
 ```
 
 ## Business data slicing
@@ -188,7 +258,7 @@ business1.head()
 ```
 
 ```{python}
-business1.rename(columns={'name':'title','categories':'genres'})
+business1.rename(columns={'name':'title','categories':'genres'},inplace=True)
 ```
 
 ```{python}
@@ -205,7 +275,12 @@ business1=business1.drop(["business_id"], axis=1)
 ```
 
 ```{python}
-business1=business1[["movieId","name","categories"]]
+business1=business1[["movieId","title","genres"]]
+business1.set_index("movieId",inplace=True)
+```
+
+```{python}
+business1.head()
 ```
 
 ```{python}
@@ -282,8 +357,12 @@ ratings=ratings[["userId","movieId","stars"]]
 ratings["timestamp"]=1260759144
 ```
 
-```{python active="", eval=FALSE}
-ratings.rename(columns={'stars':'rating'})
+```{python}
+ratings.rename(columns={'stars':'rating'},inplace=True)
+```
+
+```{python}
+ratings.set_index("userId",inplace=True)
 ```
 
 ```{python}
@@ -292,4 +371,16 @@ ratings.head()
 
 ```{python}
 ratings.to_csv("data\\ratings.csv")
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
 ```
