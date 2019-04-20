@@ -34,15 +34,14 @@ pd.options.display.max_columns = 999
 warnings.filterwarnings("ignore")
 ```
 
-# Get data and save as pickle data types
+# Subsetting Data
+
+
+- keep user only who reviewed more than 100 times. this will eliminate budget constraint
 
 ```{python}
-user = pd.read_json('data\\user.json', lines=True)
-user.head()
-```
-
-```{python}
-user[['review_count']].mean()
+user=pd.read_pickle("data\\user.pkl")
+user.shape
 ```
 
 ```{python}
@@ -51,32 +50,11 @@ user['fans']=user['fans'].astype(float)
 user['review_count']=user['review_count'].astype(float)
 
 
-#user=user.loc[user['useful']>40,:]
-#user=user.loc[user['fans']>5,:]
-user=user.loc[user['review_count']>50,:]
+user=user.loc[user['review_count']>100,:]
 ```
 
 ```{python}
 user.shape
-```
-
-```{python}
-user.to_pickle("data\\user.pkl")
-user.head()
-```
-
-```{python}
-# checkin = pd.read_json('data\\checkin.json', lines=True)
-# checkin.to_pickle("data\\checkin.pkl")
-# checkin.head()
-# review = pd.read_json('data\\review.json', lines=True)
-# review.to_pickle("data\\review.pkl")
-```
-
-```{python}
-# tip = pd.read_json('data\\tip.json', lines=True)
-# tip.to_pickle("data\\tip.pkl")
-# tip.head()
 ```
 
 ```{python}
@@ -92,25 +70,13 @@ business.head()
 ```
 
 ```{python}
-#business["review_count"].value_counts()
-```
-
-```{python}
-
 business=business.loc[(business['city']=='Las Vegas') ,:]
-#business=business.loc[business['review_count']>20,:]
+business=business.loc[(business['review_count']>=300) ,:]
 ```
 
 ```{python}
-#business.to_pickle("data\\business.pkl")
-business.to_pickle("data\\business1.pkl")
+
 business.shape
-```
-
-```{python}
-# photo = pd.read_json('data\\photo.json', lines=True)
-# photo.to_pickle("data\\photo.pkl")
-# photo.head()
 ```
 
 # subset datasets 
@@ -131,7 +97,7 @@ review['yeni']=1
 
 abc=review.groupby(['user_id']).sum()
 
-abc=abc.loc[abc['yeni']>=40,:]
+abc=abc.loc[abc['yeni']>=100,:]
 
 abc=abc.reset_index()
 users_to_include=abc[["user_id"]]
@@ -158,152 +124,68 @@ review.shape
 
 ```{python}
 review=review.loc[:,["business_id","stars","user_id"]]
-review.shape
 
-review.head()
-
-review.to_pickle("data\\review1")
-```
-
-## Business data slicing
-
-```{python}
-# business=pd.read_pickle('data\\business.pkl')
-
-# business.head()
-
-# business['city'].value_counts()
-
-# business=business.loc[(business['city']=='Las Vegas') & (business['review_count']>100),:]
-
-# business=business.loc[:,["categories","business_id","name"]]
-
-# business.to_pickle("data\\business1")
-```
-
-## user slicing
-
-```{python}
-# user=pd.read_pickle('data\\user.pkl')
-
-# user.head()
-
-# user.head()
-
-# user=user.loc[:,['user_id','review_count','useful']]
-# user.head()
-
-# user.info()
-
-# user=user.loc[(user['review_count']>60) & (user['useful']>10),:]
-# user.shape
-
-# user.to_pickle('data\\user1')
 ```
 
 # Load data set and merge them
 
 ```{python}
-user1=pd.read_pickle('data\\user.pkl')
-user1.shape
+business=business[["business_id","name","categories"]]
+
 ```
 
 ```{python}
-user1.head()
+business=business.sort_values("business_id")
 ```
 
 ```{python}
-review1=pd.read_pickle('data\\review1')
-review1.shape
+business.shape
 ```
 
 ```{python}
-review1.head()
+business["movieId"] = business.index + 1
 ```
 
 ```{python}
-business1=pd.read_pickle('data\\business1')
-business1.reset_index(inplace=True)
-
-business1=business1.drop(["index"], axis=1)
-business1.shape
+business.head()
 ```
 
 ```{python}
-business1.head()
+business.rename(columns={'name':'title','categories':'genres'},inplace=True)
 ```
 
 ```{python}
-business1=business1[["business_id","name","categories"]]
-business1=business1.fillna(0)
-```
-
-```{python}
-business1=business1.sort_values("business_id")
-```
-
-```{python}
-business1.shape
-```
-
-```{python}
-business1["movieId"] = business1.index + 1
-```
-
-```{python}
-business1.head()
-```
-
-```{python}
-business1.rename(columns={'name':'title','categories':'genres'},inplace=True)
-```
-
-```{python}
-business_id_codes=business1[['business_id','movieId']]
+business_id_codes=business[['business_id','movieId']]
 business_id_codes.head()
 ```
 
 ```{python}
-business1=business1.sort_values("movieId")
+business=business.sort_values("movieId")
 ```
 
 ```{python}
-business1=business1.drop(["business_id"], axis=1)
+business=business[["movieId","title","genres"]]
+business.set_index("movieId",inplace=True)
 ```
 
 ```{python}
-business1=business1[["movieId","title","genres"]]
-business1.set_index("movieId",inplace=True)
+business_id_codes.shape
 ```
 
 ```{python}
-business1.shape
+business.head()
 ```
 
 ```{python}
-business1.head()
+business.to_csv("data\\movies.csv")
 ```
 
 ```{python}
-business1.to_csv("data\\movies.csv")
+review.head()
 ```
 
 ```{python}
-review1=pd.read_pickle('data\\review1')
-review1.shape
-```
-
-```{python}
-restaurant=pd.read_pickle('data\\business1')
-restaurant.shape
-```
-
-```{python}
-restaurant.head()
-```
-
-```{python}
-ratings=pd.merge(restaurant,review1,on="business_id",how="inner")
+ratings=pd.merge(business_id_codes,review,on="business_id",how="inner")
 ```
 
 ```{python}
