@@ -57,12 +57,15 @@ business.tail(100)
 ```
 
 ```{python}
-foods_lsit=["Chinese","Bagels","Pizza","Coffee & Tea","Mexican","Ice Cream & Frozen Yogurt","Italian",
-"American (Traditional)","Sandwiches","Fast Food","Thai","American (New)","Burgers","Japanese","Vietnamese",
-"Steakhouses","Bakeries","Sushi Bars","Juice Bars & Smoothies","Food Trucks","Hot Dogs","Chicken Wings","Donuts",
-"Filipino","Korean","Mediterranean","Breakfast & Brunch","Delis","Seafood","Desserts","Sports Bars","Cafes","Ethiopian",
+foods_lsit=["Chinese","Thai","Mexican","Delis","Malaysian","Hookah","Vietnamese","Mediterranean","Specialty Food","Fish", 
+            "Chips","Latin American","Indian","Bagels","Middle Eastern","Mexican","Ice Cream","Frozen Yogurt",
+            "Canadian","Italian","Caribbean","Greek"," Delis",
+"American","Sandwiches","Fast Food","Thai","American","Burgers","Japanese","Vietnamese",
+"Steakhouses","Bakeries","Sushi Bars","Juice Bars", "Smoothies","Food Trucks","Hot Dogs","Chicken Wings","Donuts",
+"Filipino","Korean","Mediterranean","Breakfast", "Brunch","Delis","Seafood","Desserts","Sports Bars","Cafes","Ethiopian",
 "Cocktail Bars","Indian","Kebab","Turkish","Arabic","Burgers","Barbeque","Vegan","Hookah Bars","Cupcakes","Soup",
-"Asian","Cheesesteaks","Asian Fusion","Persian/Iranian","Greek","French","German","Brazilian","Seafood"]
+"Asian","Cheesesteaks","Asian Fusion","Persian","Iranian","Greek","French","Fast Food","Bakery","German","Brazilian",
+            "Seafood","Pizza","Coffee", "Tea","Burgers"]
 
 
 ```
@@ -85,7 +88,7 @@ business=business.loc[(business['city']=='Las Vegas') ,:]
 ```
 
 ```{python}
-business=business.loc[(business['review_count']>=40) ,:]
+business=business.loc[(business['review_count']>=10) ,:]
 business_to_include=business[["business_id"]]
 business_to_include.head()
 ```
@@ -98,7 +101,7 @@ business.shape
 ```{python}
 for index, row in business.iterrows():
     for food in foods_lsit:
-        if food in row["categories"].split():
+        if food in row["categories"]:
             business.loc[index,'foods']=food
             break
     
