@@ -29,8 +29,8 @@ import numpy as np
 import codecs
 from json import JSONDecoder
 from functools import partial
-pd.options.display.max_rows = 999
-pd.options.display.max_columns = 999
+pd.options.display.max_rows = 9999
+pd.options.display.max_columns = 9999
 warnings.filterwarnings("ignore")
 ```
 
@@ -38,24 +38,6 @@ warnings.filterwarnings("ignore")
 
 
 - keep user only who reviewed more than 100 times. this will eliminate budget constraint
-
-```{python}
-user=pd.read_pickle("data\\user.pkl")
-user.shape
-```
-
-```{python}
-user['useful']=user['useful'].astype(float)
-user['fans']=user['fans'].astype(float)
-user['review_count']=user['review_count'].astype(float)
-
-
-user=user.loc[user['review_count']>100,:]
-```
-
-```{python}
-user.shape
-```
 
 ```{python}
 business = pd.read_json('data\\business.json', lines=True)
@@ -66,17 +48,72 @@ business.shape
 ```
 
 ```{python}
-business.head()
+business.tail(100)
+```
+
+```{python}
+#business["categories"].value_counts()
+
+```
+
+```{python}
+foods_lsit=["Chinese","Bagels","Pizza","Coffee & Tea","Mexican","Ice Cream & Frozen Yogurt","Italian",
+"American (Traditional)","Sandwiches","Fast Food","Thai","American (New)","Burgers","Japanese","Vietnamese",
+"Steakhouses","Bakeries","Sushi Bars","Juice Bars & Smoothies","Food Trucks","Hot Dogs","Chicken Wings","Donuts",
+"Filipino","Korean","Mediterranean","Breakfast & Brunch","Delis","Seafood","Desserts","Sports Bars","Cafes","Ethiopian",
+"Cocktail Bars","Indian","Kebab","Turkish","Arabic","Burgers","Barbeque","Vegan","Hookah Bars","Cupcakes","Soup",
+"Asian","Cheesesteaks","Asian Fusion","Persian/Iranian","Greek","French","German","Brazilian","Seafood"]
+
+
+```
+
+```{python}
+pattern = '|'.join(foods_lsit)
+pattern
+```
+
+```{python}
+business["include"]=business.categories.str.contains(pattern)
+```
+
+```{python}
+business=business.loc[(business['include']==True),:]
 ```
 
 ```{python}
 business=business.loc[(business['city']=='Las Vegas') ,:]
-business=business.loc[(business['review_count']>=300) ,:]
+```
+
+```{python}
+business=business.loc[(business['review_count']>=40) ,:]
+business_to_include=business[["business_id"]]
+business_to_include.head()
 ```
 
 ```{python}
 
 business.shape
+```
+
+```{python}
+for index, row in business.iterrows():
+    for food in foods_lsit:
+        if food in row["categories"].split():
+            business.loc[index,'foods']=food
+            break
+    
+```
+
+```{python}
+del business["categories"]
+```
+
+```{python}
+business.rename(columns={"foods":'categories'},inplace=True)
+```
+
+```{python}
+business = business.dropna(axis=0, subset=['categories'])
 ```
 
 # subset datasets 
@@ -93,11 +130,15 @@ review.shape
 ```
 
 ```{python}
+review=pd.merge(review,business_to_include,how='inner',on='business_id')
+```
+
+```{python}
 review['yeni']=1
 
 abc=review.groupby(['user_id']).sum()
 
-abc=abc.loc[abc['yeni']>=100,:]
+abc=abc.loc[abc['yeni']>=40,:]
 
 abc=abc.reset_index()
 users_to_include=abc[["user_id"]]
@@ -107,11 +148,31 @@ review=pd.merge(review,users_to_include,how='inner',on='user_id')
 ```
 
 ```{python}
-review.tail(30)
+review.tail(5)
 ```
 
 ```{python}
 review.shape
+```
+
+```{python}
+review['yeni']=1
+
+abc=review.groupby(['business_id']).sum()
+
+abc=abc.loc[abc['yeni']>=40,:]
+
+abc=abc.reset_index()
+business_to_include=abc[["business_id"]]
+business_to_include.head()
+```
+
+```{python}
+review=pd.merge(review,business_to_include,how='inner',on='business_id')
+```
+
+```{python}
+#review["business_id"].value_counts()
 ```
 
 ```{python}
@@ -281,7 +342,15 @@ ratings.head()
 ```
 
 ```{python}
+ratings.shape
+```
+
+```{python}
 ratings.to_csv("data\\ratings.csv")
+```
+
+```{python}
+
 ```
 
 ```{python}
