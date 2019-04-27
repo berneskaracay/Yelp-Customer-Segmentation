@@ -48,7 +48,7 @@ business.shape
 ```
 
 ```{python}
-business.tail(100)
+business.tail(10)
 ```
 
 ```{python}
@@ -137,6 +137,10 @@ review=pd.merge(review,business_to_include,how='inner',on='business_id')
 ```
 
 ```{python}
+review.head()
+```
+
+```{python}
 review['yeni']=1
 
 abc=review.groupby(['user_id']).sum()
@@ -191,6 +195,10 @@ review=review.loc[:,["business_id","stars","user_id"]]
 
 ```
 
+```{python}
+review.head()
+```
+
 # Load data set and merge them
 
 ```{python}
@@ -219,7 +227,7 @@ business.rename(columns={'name':'title','categories':'genres'},inplace=True)
 ```
 
 ```{python}
-business_id_codes=business[['business_id','movieId']]
+#business_id_codes=business[['business_id','movieId']]
 business_id_codes.head()
 ```
 
@@ -228,7 +236,11 @@ business=business.sort_values("movieId")
 ```
 
 ```{python}
-business=business[["movieId","title","genres"]]
+business.head()
+```
+
+```{python}
+business=business[["movieId","title","genres","business_id"]]
 business.set_index("movieId",inplace=True)
 ```
 

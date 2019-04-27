@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 *.ipynb
+*.npz
+SVD
+*.json
+*.py
 
 # Distribution / packaging
 .Python
