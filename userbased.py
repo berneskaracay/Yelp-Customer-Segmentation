@@ -1,10 +1,8 @@
 # +
-# https://udemy.com/recommender-systems
-# https://deeplearningcourses.com/recommender-systems
+
+
 from __future__ import print_function, division
 from builtins import range, input
-# Note: you may need to update your version of future
-# sudo pip install -U future
 
 import pickle
 import numpy as np
@@ -52,16 +50,15 @@ print("N:", N, "M:", M)
 #   print("N =", N, "are you sure you want to continue?")
 #   print("Comment out these lines if so...")
 #   exit()
-# -
 
-# to find the user similarities, you have to do O(N^2 * M) calculations!
-# in the "real-world" you'd want to parallelize this
-# note: we really only have to do half the calculations, since w_ij is symmetric
+# +
+
 K = 25 # number of neighbors we'd like to consider
 limit = 5 # number of common restaurants users must have in common in order to consider
 neighbors = [] # store neighbors in this list
 averages = [] # each user's average rating for later use
 deviations = [] # each user's deviation for later use
+# -
 
 for i in range(N):
   # find the 25 closest users to user i

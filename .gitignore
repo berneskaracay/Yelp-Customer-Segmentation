@@ -9,7 +9,7 @@ __pycache__/
 *.npz
 SVD
 *.json
-*.py
+
 
 # Distribution / packaging
 .Python
