@@ -32,9 +32,16 @@ from json import JSONDecoder
 from functools import partial
 import requests
 from xml.etree import ElementTree
+from folium.plugins import MarkerCluster
+
+
 pd.options.display.max_rows = 9999
 pd.options.display.max_columns = 9999
 warnings.filterwarnings("ignore")
+```
+
+```{python}
+#pip install -U folium
 ```
 
 # Subsetting Data
@@ -91,39 +98,72 @@ map3=folium.Map(location=[lat,long],zoom_start=11)
 ```
 
 ```{python}
-for row in good_las_vegas_map[0:1].iterrows():
-    row_values = row[1]
-    map.simple_marker(
-        location = [row_values['latitude'], row_values['longitude']],clustered_marker = True)
-map
-```
+mc = MarkerCluster()
 
-```{python}
+
 for row in good_las_vegas_map.iterrows():
-    print(row)
     row_values = row[1]
     location = [row_values['latitude'], row_values['longitude']]
-    marker = folium.CircleMarker(location=location,radius=2)
-    marker.add_to(map)
+    marker = folium.Marker(location=location)
+    marker.add_to(map2)
+
+map2.add_child(mc)
+map2
+```
+
+```{python}
+
+
+
+for row in good_las_vegas_map.iterrows():
+    row_values = row[1]
+    location = [row_values['latitude'], row_values['longitude']]
+    marker = folium.Marker(location=location)
+    marker.add_to(map2)
+map2
+```
+
+```{python}
+
+
+
+for row in good_las_vegas_map.iterrows():
+    row_values = row[1]
+    location = [row_values['latitude'], row_values['longitude']]
+    marker = folium.Marker(location=location)
+    marker.add_to(map2)
+map2
+```
+
+```{python}
+
+def color(stars):
+    if stars<=2:
+        col='green'
+    elif ((stars>2)&(stars<=5)):
+        col='blue'
+    elif (stars>5):
+        col='red'
+    return col
+```
+
+```{python}
+
+
+mc = MarkerCluster()
+for row in good_las_vegas_map.iterrows():
+    row_values = row[1]
+    location = [row_values['latitude'], row_values['longitude']]
+    popup= "Restaurant Name " + str(row_values['name'])  +' <br\>'+ "deaths: " + str(row_values['name'])
+    mc.add_child(folium.CircleMarker(location=location
+                                     ,color= color(row_values['stars'])
+                                     ,radius=row_values['stars']
+                                     ,fill_color = color(row_values['stars'])
+                                     ,fill_opacity = 0.5
+                                     ,popup=popup
+                                    ))
+map.add_child(mc)
 map
-```
-
-```{python}
-
-```
-
-```{python}
-for point in range(0, len(locationlist)):
-    folium.Marker(locationlist[point],popup='Mt. Hood Meadows').add_to(map)
-map
-```
-
-```{python}
- folium.Marker(locationlist[point], popup='ID:'+df_counters['ID'][point]+'
-```
-
-```{python}
-folium.Marker(locationlist[point], popup=good_las_vegas_map['name'][point]).add_to(map)
 ```
 
 ```{python}
