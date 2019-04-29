@@ -1,0 +1,131 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 1.0.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Set up working environment
+
+```{python}
+
+import pandas as pd
+import json
+import requests
+from bs4 import BeautifulSoup as BS
+import re
+import warnings
+import bokeh
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import codecs
+import folium
+from json import JSONDecoder
+from functools import partial
+import requests
+from xml.etree import ElementTree
+pd.options.display.max_rows = 9999
+pd.options.display.max_columns = 9999
+warnings.filterwarnings("ignore")
+```
+
+# Subsetting Data
+
+
+- keep user only who reviewed more than 100 times. this will eliminate budget constraint
+
+```{python}
+business = pd.read_json('data\\business.json', lines=True)
+```
+
+```{python}
+business.shape
+```
+
+```{python}
+business.tail(10)
+```
+
+```{python}
+business_list=pd.value_counts(business.city).to_frame().reset_index()
+business_list.columns = ['City','Frequency']
+business_list.head(14)
+```
+
+```{python}
+las_vegas_map=business.loc[(business.city=="Las Vegas") | (business.city=="North Las Vegas"),:]
+las_vegas_map.shape
+```
+
+```{python}
+las_vegas_map=las_vegas_map.loc[(business.review_count>60),:]
+```
+
+```{python}
+good_las_vegas_map=las_vegas_map.loc[(business.stars>4.5),:]
+good_las_vegas_map
+```
+
+```{python}
+locations = good_las_vegas_map[['latitude', 'longitude']]
+locationlist = locations.values.tolist()
+len(locationlist)
+
+```
+
+```{python}
+lat=36.2
+long=-115.2
+
+map = folium.Map(location=[lat,long], zoom_start=11)
+map2=folium.Map(location=[lat,long],zoom_start=11)
+map3=folium.Map(location=[lat,long],zoom_start=11)
+```
+
+```{python}
+for row in good_las_vegas_map[0:1].iterrows():
+    row_values = row[1]
+    map.simple_marker(
+        location = [row_values['latitude'], row_values['longitude']],clustered_marker = True)
+map
+```
+
+```{python}
+for row in good_las_vegas_map.iterrows():
+    print(row)
+    row_values = row[1]
+    location = [row_values['latitude'], row_values['longitude']]
+    marker = folium.CircleMarker(location=location,radius=2)
+    marker.add_to(map)
+map
+```
+
+```{python}
+
+```
+
+```{python}
+for point in range(0, len(locationlist)):
+    folium.Marker(locationlist[point],popup='Mt. Hood Meadows').add_to(map)
+map
+```
+
+```{python}
+ folium.Marker(locationlist[point], popup='ID:'+df_counters['ID'][point]+'
+```
+
+```{python}
+folium.Marker(locationlist[point], popup=good_las_vegas_map['name'][point]).add_to(map)
+```
+
+```{python}
+
+```
