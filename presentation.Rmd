@@ -1,0 +1,63 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 1.0.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+```{python slideshow={'slide_type': 'skip'}}
+from __future__ import print_function, division
+from builtins import range, input
+import pandas as pd
+import json
+import requests
+from bs4 import BeautifulSoup as BS
+import re
+import warnings
+import bokeh
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import codecs
+from json import JSONDecoder
+from functools import partial
+
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+
+pd.options.display.max_rows = 9999
+pd.options.display.max_columns = 9999
+warnings.filterwarnings("ignore")
+```
+
+```{python slideshow={'slide_type': 'skip'}}
+#pip install jupyter_contrib_nbextensions
+```
+
+```{python slideshow={'slide_type': 'skip'}}
+business_word_cloud=pd.read_pickle("data\\business_word_cloud.pkl")
+```
+
+```{python slideshow={'slide_type': 'slide'}}
+myData=business_word_cloud.head(300)
+text=""
+for index, row in myData.iterrows():
+    str1=""
+    str1= (row['Restaurant']+" ")*row['Frequency']
+    text=text+str1
+wordcloud = WordCloud(max_font_size=40, max_words=200, background_color="white", collocations = False).generate(text)
+plt.figure(figsize=(60,30))
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.show()
+```
+
+```{python}
+
+```
