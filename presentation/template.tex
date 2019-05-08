@@ -1,0 +1,220 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+\usecolortheme[named=Blue]{structure}
+\usetheme{Madrid}
+\setbeamertemplate{items}[rectangle]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{navigation symbols}{}
+\newtheorem{proposition}{Proposition}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{enumerate}
+\usepackage{times}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{upquote}
+\usepackage{times}
+
+
+
+
+\title [Vanderbilt University] {Trade Policy In Regulated Economies}
+\author[Bernes Karacay]{\textbf{}\\
+\vskip 0.1in (Presented by: Bernes Karacay)\\
+\vskip 0.2in
+Department of  Economics\\
+  Vanderbilt University}
+\institute[]{}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{itemize}
+  \item Jagduish Bhagwati, described Foreign Direct Investment (FDI)as the investments that is made
+  by Multi National Companies (MNC) in order to skip the protectionist measures that is taken by
+  home country.
+ \item Many countries use protectionist barriers to prevent job losses and protect home
+ industry from computation which is stemmed from cheap imported goods. Companies can get
+ rid of this protectionist barrier by opening a new branch in home country.
+ \item Hence, tariff rates
+ couldn't serve as a protection alone to domestic entrepreneur(either it is private or State Own
+ Enterprise), we should also consider that restrict foreign direct investment directly.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{State Own Enterprises}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.85]{Soe.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{State Own Enterprises}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.5]{Soe_History.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Fdi Restriction Index}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.35]{FdiRes.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{ Fdi Restriction Index}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.6]{Res1.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{ Fdi Restriction Index}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.6]{Res2.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Weighted Tariff Rate}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.75]{tariff.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{FDI Inflow}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.2]{EnergyMining.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{FDI inflow}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.2]{Manufacturing.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{FDI inflow}
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.2]{FD.png}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Model}
+The utility function is represented as
+\begin{equation}
+U=x_0+\frac{\theta}{\theta-1}x^{\frac{\theta-1}{\theta}}, \hspace{1cm} \theta>0, \theta\neq0
+\end{equation}
+where $ x_0 $ denotes consumption of the numeraire good and x is an index of consumption of the differentiated products and $\theta>0$ denotes the elasticity of demand for the CES aggregate. The consumption index is denoted as
+\begin{equation}\label{eq:ces}
+x=\bigg[\sum_{j \in N_d}x(j)^\frac{\epsilon-1}{\epsilon}+\sum_{j \in N_i}x(j)^\frac{\epsilon-1}{\epsilon}+\sum_{j \in N_m}x(j)^\frac{\epsilon-1}{\epsilon}+\sum_{j \in N_{soe}}x(j)^\frac{\epsilon-1}{\epsilon}\bigg]^\frac{\epsilon}{\epsilon-1}
+, \hspace{1cm} \epsilon>1
+\end{equation}
+where $ x(j) $ represents of the product $ j $, and  $ N_h$, $N_i $,  $N_m $ are differentiated products from different sources: home, import , multinational companies produce at home; respectively. In addition, the $\epsilon>1$ is the own-price elasticity of demand of each brand. We denote by $p_j$ the prices of each good $j=d,i,m,soe$. 
+\end{frame}
+
+\begin{frame}
+	\frametitle{Model}
+Hence maximizing the utility subject to budget constraint gives us
+\begin{equation} \label{eq:demand}
+x_j=p_j^{-\epsilon}q^{\epsilon-\theta}, \hspace{0.5cm}for  \hspace{0.3cm} j=i,d,m\hspace{0.5cm} and \hspace{0.5cm} x=q^{-\theta}
+\end{equation}
+The cost of production good differ by the type of company: $c_j$, j=h,m,i. Importer also incur a tariff cost $\tau$, so marginal cost is $c_i+\tau$ for importer. I further assume that multinational use exactly same technology and labor type both in foreign country and home country. Hence, the order is given as: $c_{soe}>c_d>c_m=c_i$ and after tariff imposed $c_{soe}>c_i+\tau>c_d>c_m$. Each company produced where marginal cost is equal to the marginal revenue. So by using demand equations in \ref{eq:demand} and profit maximizing condition, we have find prises. 
+\end{frame}
+
+\begin{frame}
+\begin{equation}\label{eq:price}
+\begin{split}
+p_d&=\frac{\epsilon}{\epsilon-1}c_d\\
+p_i&=\frac{\epsilon}{\epsilon-1}c_i(1+\tau)\\
+p_m&=\frac{\epsilon}{\epsilon-1}c_m\\
+p_{soe}&=\frac{\epsilon}{\epsilon-1}c_{soe}
+\end{split}
+\end{equation} 
+The profit functions takes form
+\begin{equation}\label{eq:profit}
+\begin{split}
+\pi_m&=(p_m-c_m)x_m\\
+\pi_i&=(p_i-(c_i+\tau)x_i\\
+\pi_d&=(p_d-c_d)x_d
+\end{split}
+\end{equation}
+After substituting prices in \ref{eq:price} into the \ref{eq:profit}
+we get 
+\begin{equation}\label{eq:maxprofit}
+\pi_j=\frac{p_jx_j}{\epsilon}, j=d,i,m,soe
+\end{equation}
+\end{frame}
+
+\begin{frame}
+\begin{equation}
+G(n_m,\tau,t)\equiv\alpha V+\beta n_{soe} \pi_{soe}+ n_mt\pi_m+n_i\tau x_i+n_dt\pi_d,
+\end{equation}
+where $ \beta $ is the weight given SOE profit, E is employment level in SOE,
+$ \tau $ is tariff and $ t $ is the profit tax applied to all private and multinational companies, $ \alpha $ is the weight assign to the welfare of the society and $V=Income+\frac{q^{1-\theta}}{\theta-1}$. Lets further assume that multinational companies pays a wage premium $w-1>0$  and to produce one unit multinational companies need $a_m$. Hence total wage premium paid by multinational is equal to the $(w-1)n_ma_mx_m$. The multinational price is $p_m=wa_m\epsilon/\epsilon-1$, then total wage premium can be written $(\epsilon-1)(w-1)/w\epsilon]n_mp_mx_m$. So utility takes form after including wage premium.
+\begin{equation}
+U=L+\frac{\epsilon-1}{\epsilon}\frac{w-1}{w}n_mp_mx_m+\frac{1}{\theta-1}[n_dp_dx_d+n_ip_ix_i+n_mp_mx_m+n_{soe}p_{soe}x_{soe}]
+\end{equation}
+\end{frame}
+
+\begin{frame}
+Hence government welfare maximization function is
+\begin{equation}
+\begin{split}
+G(\tau,t,m)&\equiv\alpha V+\beta n_{soe} \pi_{soe}+ n_mt\pi_m+n_i\tau x_i+n_dt\pi_d\\
+&=\alpha L + \alpha \frac{\epsilon-1}{\epsilon}\frac{w-1}{w}mp_mx_m\\
+&+ \frac{\alpha}{\theta-1}[n_dp_dx_d+n_ip_ix_i+n_mp_mx_m+n_{soe}p_{soe}x_{soe}]\\
+&+\beta n_{soe} \pi_{soe}+ n_mt\pi_m+n_i\tau x_i+n_dt\pi_d
+\end{split}
+\end{equation}
+\end{frame}
+
+\begin{frame}
+	Hence government welfare maximization function is
+	\begin{equation}
+	\begin{split}
+	s_{imt}&=-\beta s_{soe_{it}}+\alpha(\epsilon-1)(1-1/w_{it})-\epsilon\frac{\tau_t}{p_ft}s_{iit}+Complicated_term
+	\end{split}
+	\end{equation}
+\end{frame}
+
+
+
+
+
+
+\end{document}
