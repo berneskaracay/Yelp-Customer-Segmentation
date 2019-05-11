@@ -75,6 +75,8 @@ def update_userrestaurant2rating_test(row):
   userrestaurant2rating_test[(i,j)] = row.rating
 df_test.apply(update_userrestaurant2rating_test, axis=1)
 
+userrestaurant2rating_test
+
 # +
 # note: these are not really JSONs
 with open('user2restaurant.json', 'wb') as f:

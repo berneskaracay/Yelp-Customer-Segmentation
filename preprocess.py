@@ -47,6 +47,8 @@ business=business.loc[(business['include']==True),:]
 
 business=business.loc[(business['city']=='Las Vegas') ,:]
 
+business.to_pickle("data\\business_presentation.pkl")
+
 business=business.loc[(business['review_count']>=10) ,:]
 business_to_include=business[["business_id"]]
 business_to_include.head()

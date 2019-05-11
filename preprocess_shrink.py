@@ -35,7 +35,7 @@ restaurant_ids = [m for m, c in restaurant_ids_count.most_common(m)]
 df.shape
 
 # make a copy, otherwise ids won't be overwritten
-df_small = df[df.userId.isin(user_ids) & df.restaurant_idx.isin(restaurant_ids)]
+df_small = df[df.userId.isin(user_ids) & df.restaurant_idx.isin(restaurant_ids)].copy()
 
 df_small.shape
 

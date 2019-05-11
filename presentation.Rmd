@@ -37,25 +37,49 @@ warnings.filterwarnings("ignore")
 ```
 
 ```{python slideshow={'slide_type': 'skip'}}
-#pip install jupyter_contrib_nbextensions
+#pip install RISE
 ```
 
 ```{python slideshow={'slide_type': 'skip'}}
 business_word_cloud=pd.read_pickle("data\\business_word_cloud.pkl")
 ```
 
+# The restaurant business is over crowded
+- There are more than 10000 different restaurants in Las Vegas.
+- One fourth of them have more than one branch.
+- However, we really want and dine in only small subset of all these restaurants.
+
+## Can friend help us?
+
+- Yes, I tend to find my friends' stuffs interesting
+- What if I had only few friends, and what they like do not always attract me?
+- They can only visit limited number of them. 
+
+## Can Google help?
+- Read the reviews which is very time consuming and not possible for many new opened restaurants.
+- Yes, but only when we really know what we are looking for
+- What if I just want some interesting music tracks?
+
+
 ```{python slideshow={'slide_type': 'slide'}}
-myData=business_word_cloud.head(300)
+myData=business_word_cloud.head(200)
 text=""
 for index, row in myData.iterrows():
     str1=""
     str1= (row['Restaurant']+" ")*row['Frequency']
     text=text+str1
-wordcloud = WordCloud(max_font_size=40, max_words=200, background_color="white", collocations = False).generate(text)
+wordcloud = WordCloud(max_font_size=30, max_words=200, background_color="white", collocations = False).generate(text)
 plt.figure(figsize=(60,30))
 plt.imshow(wordcloud, interpolation="bilinear")
 plt.axis("off")
 plt.show()
+```
+- In technical terms, a recommendation engine problem is to develop a
+mathematical model or objective function which can predict how much a user
+will like an item.
+
+```{python}
+
 ```
 
 ```{python}
